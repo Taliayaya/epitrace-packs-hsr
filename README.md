@@ -1,4 +1,4 @@
-# EPITRACE Packs Extension
+# EPITRACE Packs Extension - Crossplatform Chrome & Firefox extension !
 
 ## Download
 
@@ -6,7 +6,7 @@ While im waiting for Mozilla validation, you can still download the extension di
 
 ## Overview
 
-The EPITRACE Packs extension is a Firefox add-on designed to enhance the experience EPITA students. This extension allows users to open traces as FIFA packs, adding an element of fun during projects or piscines, and providing an **_opportunity to flex_**.
+The EPITRACE Packs extension is a web extension designed to enhance the experience EPITA students. This extension allows users to open traces as FIFA packs, adding an element of fun during projects or piscines, and providing an **_opportunity to flex_**.
 
 ## Features
 
@@ -20,8 +20,8 @@ The EPITRACE Packs extension is a Firefox add-on designed to enhance the experie
 
 To install the EPITRACE Packs extension, follow these steps:
 
-1. Download the extension from the Firefox Add-ons store.
-2. Click "Add to Firefox" and confirm the installation.
+1. Download the extension.
+2. Add the extension to the browser and confirm the installation.
 3. Open the intranet, and go open your traces !
 
 ## Contributing
