@@ -1,5 +1,7 @@
 // content.js
 
+const browserAPI = typeof browser !== "undefined" ? browser : chrome;
+
 console.log("content.js");
 
 function find_a(el) {
@@ -9,18 +11,18 @@ function find_a(el) {
 
 // Function to add the current hash to a database
 function addHashToDB(hash) {
-  browser.storage.local.get({ hashes: [] }).then((result) => {
+  browserAPI.storage.local.get({ hashes: [] }).then((result) => {
     let hashes = result.hashes;
     if (!hashes.includes(hash)) {
       hashes.push(hash);
-      browser.storage.local.set({ hashes: hashes });
+      browserAPI.storage.local.set({ hashes: hashes });
     }
   });
 }
 
 // Function to check if the database contains the hash
 async function isHashInDB(hash) {
-  let result = await browser.storage.local.get({ hashes: [] });
+  let result = await browserAPI.storage.local.get({ hashes: [] });
   return result.hashes.includes(hash);
 }
 
@@ -164,7 +166,7 @@ function get_color(image) {
 }
 
 function get_url(percentage) {
-  return browser.runtime.getURL("img/" + get_image(percentage) + ".png");
+  return browserAPI.runtime.getURL("img/" + get_image(percentage) + ".png");
 }
 
 function getVideoUrl(percentage) {
@@ -180,7 +182,7 @@ let href = "";
 
 async function openPackAnimation(button, inputPercentage) {
   function main_pack() {
-    return browser.runtime.getURL("img/pack.png");
+    return browserAPI.runtime.getURL("img/pack.png");
   }
 
   let pack = document.createElement("div");
@@ -255,7 +257,7 @@ async function openPackAnimation(button, inputPercentage) {
             if (percentages[i] == 100) {
               make_confetis();
             } else if (percentages[i] == 0) {
-              pack.style.backgroundImage = `url(${browser.runtime.getURL(
+              pack.style.backgroundImage = `url(${browserAPI.runtime.getURL(
                 "img/rip_bozo.jpg"
               )})`;
 

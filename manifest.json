@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "EPITRACE Packs",
   "version": "1.0",
   "description": "Open your traces with a HSR-style Pull with an animation!",
