@@ -26,6 +26,12 @@ async function isHashInDB(hash) {
   return result.hashes.includes(hash);
 }
 
+// Function to check if the database contains the hash
+async function getDB() {
+  let result = await browserAPI.storage.local.get({ hashes: [] });
+  return result.hashes;
+}
+
 let confettiWrapper = document.createElement("div");
 confettiWrapper.classList.add("confetti-wrapper");
 confettiWrapper.style.zIndex = "9999";
@@ -61,6 +67,7 @@ function closePackDisplay() {
   if (packDisplayer) {
     packDisplayer.style.display = "none";
     packDisplayer.innerHTML = ""; // Clear the display
+    document.location.reload(); // Reload the page to reset the display
   }
 }
 
@@ -117,6 +124,31 @@ async function replaceTraceSymbols() {
 
   for (let i = 0; i < alls.length; i++) {
     await add_open_pack_button(alls[i]);
+  }
+
+  if (document.getElementsByClassName("list").length == 0) return;
+
+  var all_in_list = document.getElementsByClassName("list")[0].children;
+
+  var hashes = await getDB();
+
+  for (let i = 0; i < all_in_list.length; i++) {
+    var href = all_in_list[i].href;
+    console.log(href);
+    var is_inside = false;
+    for (let j = 0; j < hashes.length; j++) {
+      // Ne contient pas, donc je mets la classe en normal + j'enlève l'indicateur
+      if (hashes[j].includes(href)) {
+        is_inside = true;
+      }
+    }
+
+    if (!is_inside) {
+      all_in_list[i].classList.remove("list__item__secondary");
+      var checkMark =
+        all_in_list[i].getElementsByClassName("list__item__right")[0];
+      if (checkMark) checkMark.innerHTML = "";
+    }
   }
 }
 
