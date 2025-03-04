@@ -2,14 +2,25 @@
   "manifest_version": 2,
   "name": "EPITRACE Packs",
   "version": "1.0",
-  "description": "Open your traces with a FIFA-style packs with an animation!",
+  "description": "Open your traces with a HSR-style Pull with an animation!",
   "content_scripts": [
     {
-      "matches": ["*://intra.forge.epita.fr/*"],
-      "js": ["content.js"],
-      "css": ["style.css"]
+      "matches": [
+        "*://intra.forge.epita.fr/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "style.css"
+      ]
     }
   ],
-  "web_accessible_resources": ["img/*.png"],
-  "permissions": ["storage"]
+  "web_accessible_resources": [
+    "img/*.png",
+    "video/*.mp4"
+  ],
+  "permissions": [
+    "storage"
+  ]
 }

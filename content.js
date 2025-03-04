@@ -76,7 +76,7 @@ async function add_open_pack_button(traceSymbol) {
 
   let percentage = traceSymbol.getAttribute("successpercent");
   let button = document.createElement("button");
-  button.textContent = "Open EpiPack";
+  button.textContent = "1 pull (160 Stellar Jades)";
   button.style.background = "#007BFF";
   button.style.color = "white";
   button.style.border = "none";
@@ -167,6 +167,15 @@ function get_url(percentage) {
   return browser.runtime.getURL("img/" + get_image(percentage) + ".png");
 }
 
+function getVideoUrl(percentage) {
+  if (percentage == 100) return "video/5star.mp4";
+  if (percentage >= 90) return "video/4star.mp4";
+  if (true || percentage >= 80) return "video/3star.mp4";
+  if (percentage >= 60) return "video/2star.mp4";
+  if (percentage >= 40) return "video/1star.mp4";
+  return "video/0star.mp4";
+}
+
 let href = "";
 
 async function openPackAnimation(button, inputPercentage) {
@@ -181,89 +190,106 @@ async function openPackAnimation(button, inputPercentage) {
   pack_text.classList.add("text-pack");
   pack.appendChild(pack_text);
 
+  let video = document.createElement("video");
+  video.setAttribute('id', 'hsrpull');
+  video.setAttribute('width', '1920');
+  video.setAttribute('height', '1080');
+  video.setAttribute('preload', 'auto');
+
+  let source = document.createElement('source');
+  source.setAttribute('type', 'video/mp4');
+  source.setAttribute('src', browser.runtime.getURL(getVideoUrl(inputPercentage)));
+
+  video.appendChild(source);
+  pack.appendChild(video);
+
   addPackToDisplay(pack);
-  //button.parentNode.insertBefore(pack, button);
-  pack.classList.add("spinning");
+  video.play();
+  video.addEventListener('ended', () => {
+    //button.parentNode.insertBefore(pack, button);
+    pack.classList.add("spinning");
 
-  href = button.parentElement
-    .getElementsByTagName("trace-symbol")[0]
-    .getAttribute("link");
+    href = button.parentElement
+      .getElementsByTagName("trace-symbol")[0]
+      .getAttribute("link");
 
-  /*for (let i = 0; i < 3; i++) {
-    let randomPercentage = ; // Random percentage between 0 and 100
-    
-  }*/
-  setTimeout(() => {
-    let currentPercentage = 100;
-    let decreaseTime = 1000; // 1 second total decrease time
-    let steps = 10; // Number of steps
-    let stepTime = decreaseTime / steps;
+    /*for (let i = 0; i < 3; i++) {
+      let randomPercentage = ; // Random percentage between 0 and 100
+      
+    }*/
+    setTimeout(() => {
+      video.remove();
+      let currentPercentage = 100;
+      let decreaseTime = 1000; // 1 second total decrease time
+      let steps = 0; // Number of steps
+      let stepTime = decreaseTime / steps;
 
-    let percentages = [
-      Math.floor(Math.random() * 100),
-      //Math.floor(Math.random() * 100),
-      inputPercentage,
-    ];
+      let percentages = [
+        Math.floor(Math.random() * 100),
+        //Math.floor(Math.random() * 100),
+        inputPercentage,
+      ];
 
-    pack_text.style.color = get_color(get_image(currentPercentage));
+      pack_text.style.color = get_color(get_image(currentPercentage));
 
-    let i = 0;
+      let i = 0;
 
-    let decrement = (100 - percentages[i]) / steps;
+      let decrement = (100 - percentages[i]) / steps;
 
-    let interval = setInterval(() => {
-      if (currentPercentage > percentages[i]) {
-        // Generate a random variation
-        currentPercentage -= decrement;
-        currentPercentage = Math.max(currentPercentage, percentages[i]); // Ensure it doesn't go below target
+      let interval = setInterval(() => {
+        if (currentPercentage > percentages[i]) {
+          // Generate a random variation
+          currentPercentage -= decrement;
+          currentPercentage = Math.max(currentPercentage, percentages[i]); // Ensure it doesn't go below target
 
-        pack_text.textContent = Math.floor(currentPercentage);
-        pack_text.style.color = get_color(get_image(currentPercentage));
-        pack.style.backgroundImage = `url(${get_url(currentPercentage)})`;
-      } else {
-        pack_text.textContent = percentages[i];
+          pack_text.textContent = Math.floor(currentPercentage);
+          pack_text.style.color = get_color(get_image(currentPercentage));
+          pack.style.backgroundImage = `url(${get_url(currentPercentage)})`;
+        } else {
+          pack_text.textContent = percentages[i];
 
-        pack.style.backgroundImage = `url(${get_url(currentPercentage)})`;
+          pack.style.backgroundImage = `url(${get_url(currentPercentage)})`;
 
-        if (i == percentages.length - 1) {
-          clearInterval(interval);
-          if (percentages[i] == 100) {
-            make_confetis();
-          } else if (percentages[i] == 0) {
-            pack.style.backgroundImage = `url(${browser.runtime.getURL(
-              "img/rip_bozo.jpg"
-            )})`;
+          if (i == percentages.length - 1) {
+            clearInterval(interval);
+            if (percentages[i] == 100) {
+              make_confetis();
+            } else if (percentages[i] == 0) {
+              pack.style.backgroundImage = `url(${browser.runtime.getURL(
+                "img/rip_bozo.jpg"
+              )})`;
 
-            pack.style.width = "744px";
-            pack.style.height = "609px";
-            pack_text.style.display = "none";
+              pack.style.width = "744px";
+              pack.style.height = "609px";
+              pack_text.style.display = "none";
+            }
+
+            pack.style.cursor = "pointer";
+
+            let span = document.createElement("span");
+            span.textContent = "Click on the card to see your trace";
+            span.style.color = "white";
+            span.style.position = "absolute";
+            span.style.bottom = "10px";
+            span.style.left = "50%";
+            span.style.transform = "translateX(-50%)";
+            span.style.fontSize = "20px";
+            span.style.fontWeight = "bold";
+            document.getElementById("pack-displayer").appendChild(span);
+
+            addHashToDB(href);
+
+            pack.addEventListener("click", function () {
+              document.location.href = href;
+            });
           }
 
-          pack.style.cursor = "pointer";
+          i++;
 
-          let span = document.createElement("span");
-          span.textContent = "Click on the card to see your trace";
-          span.style.color = "white";
-          span.style.position = "absolute";
-          span.style.bottom = "10px";
-          span.style.left = "50%";
-          span.style.transform = "translateX(-50%)";
-          span.style.fontSize = "20px";
-          span.style.fontWeight = "bold";
-          document.getElementById("pack-displayer").appendChild(span);
-
-          addHashToDB(href);
-
-          pack.addEventListener("click", function () {
-            document.location.href = href;
-          });
+          decrement = (100 - percentages[i]) / steps;
+          currentPercentage = 100;
         }
-
-        i++;
-
-        decrement = (100 - percentages[i]) / steps;
-        currentPercentage = 100;
-      }
-    }, stepTime);
-  }, 1000);
+      }, stepTime);
+    }, 1000);
+  });
 }
