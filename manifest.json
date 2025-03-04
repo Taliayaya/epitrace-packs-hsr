@@ -17,10 +17,20 @@
     }
   ],
   "web_accessible_resources": [
-    "img/*.png",
-    "video/*.mp4"
+    {
+      "resources": [
+        "img/*.png",
+        "video/*.mp4"
+      ],
+      "matches": [
+        "*://intra.forge.epita.fr/*"
+      ]
+    }
   ],
   "permissions": [
     "storage"
+  ],
+  "host_permissions": [
+    "*://intra.forge.epita.fr/*"
   ]
 }
