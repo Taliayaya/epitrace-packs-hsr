@@ -238,7 +238,17 @@ async function openPackAnimation(button, inputPercentage) {
   pack.appendChild(video);
 
   addPackToDisplay(pack);
+
   video.play();
+  href = button.parentElement
+    .getElementsByTagName("trace-symbol")[0]
+    .getAttribute("link");
+  addHashToDB(href);
+
+  video.addEventListener("click", function () {
+    document.location.href = href;
+  });
+
   video.addEventListener('ended', () => {
     //button.parentNode.insertBefore(pack, button);
     pack.classList.add("spinning");
